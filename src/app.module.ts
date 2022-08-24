@@ -10,11 +10,15 @@ import { ProblemsModule } from './problems/problems.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { WorkbooksModule } from './workbooks/workbooks.module';
 import { ArticlesModule } from './articles/articles.module';
+import { Problem } from './problems/entities/problem.entity';
+import { Submission } from './submissions/entities/submission.entity';
+import { Workbook } from './workbooks/entities/workbook.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local', '.env.development'],
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -28,6 +32,9 @@ import { ArticlesModule } from './articles/articles.module';
         database: configService.get<string>('DATABASE_NAME'),
         entities: [
           User,
+          Problem,
+          Submission,
+          Workbook,
           // __dirname + '/**/*.entity.ts',
         ],
         synchronize: true,

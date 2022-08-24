@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { LoginResponseDto } from 'src/users/dto/login-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: User) {
+  async login(user: User): Promise<LoginResponseDto> {
     const payload: JwtPayload = {
       userId: user.id,
       username: user.username,
@@ -52,6 +53,7 @@ export class AuthService {
     await this.userService.setRefreshToken(user.id, refreshToken);
 
     return {
+      user,
       accessToken,
       refreshToken,
     };

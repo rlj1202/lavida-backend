@@ -23,6 +23,7 @@ export class User {
   passwordHash: string;
 
   @Column({ nullable: true })
+  @Exclude()
   refreshToken: string;
 
   @OneToMany(() => Submission, (subsmission) => subsmission.user)

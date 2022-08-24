@@ -1,10 +1,18 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-local';
+import { Strategy, VerifyFunction } from 'passport-local';
 import { User } from 'src/users/entities/user.entity';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 
-export class LocalStrategy extends PassportStrategy(Strategy) {
+interface IVerifyCallback {
+  validate(...args: Parameters<VerifyFunction>): ReturnType<VerifyFunction>;
+}
+
+@Injectable()
+export class LocalStrategy
+  extends PassportStrategy(Strategy)
+  implements IVerifyCallback
+{
   constructor(private authService: AuthService) {
     super();
   }
