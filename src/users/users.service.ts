@@ -52,10 +52,14 @@ export class UsersService {
   }
 
   async setRefreshToken(id: number, refreshToken: string) {
-    await this.userRepository.update(id, { refreshToken });
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+    await this.userRepository.update(id, {
+      refreshTokenHash: hashedRefreshToken,
+    });
   }
 
   async deleteRefreshToken(id: number) {
-    await this.userRepository.update(id, { refreshToken: null });
+    await this.userRepository.update(id, { refreshTokenHash: null });
   }
 }

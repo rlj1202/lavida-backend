@@ -24,7 +24,7 @@ export class User {
 
   @Column({ nullable: true })
   @Exclude()
-  refreshToken: string;
+  refreshTokenHash?: string;
 
   @OneToMany(() => Submission, (subsmission) => subsmission.user)
   submissions: Submission[];

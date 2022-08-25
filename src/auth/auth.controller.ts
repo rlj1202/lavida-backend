@@ -10,8 +10,9 @@ import { User } from 'src/users/entities/user.entity';
 import { GetUser } from 'src/users/user.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { JwtGuard } from './jwt.guard';
-import { LocalAuthGuard } from './local.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { JwtGuard } from './guards/jwt.guard';
+import { LocalAuthGuard } from './guards/local.guard';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
@@ -35,8 +36,15 @@ export class AuthController {
     await this.authService.logout(user);
   }
 
+  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  async refresh() {
-    // await this.authService.refresh();
+  async refresh(@GetUser() user: User) {
+    return await this.authService.refresh(user);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh/ping')
+  async refreshPing() {
+    return 'Success';
   }
 }
