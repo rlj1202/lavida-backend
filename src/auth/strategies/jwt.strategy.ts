@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   ExtractJwt,
   Strategy,
@@ -8,7 +9,9 @@ import {
   VerifyCallback,
   VerifyCallbackWithRequest,
 } from 'passport-jwt';
+import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { Repository } from 'typeorm';
 import { JwtPayload } from '../jwt-payload.interface';
 
 interface IVerifyCallback {
@@ -28,7 +31,9 @@ export class JwtStrategy
   implements IVerifyCallback
 {
   constructor(
-    private readonly usersService: UsersService,
+    // private readonly usersService: UsersService,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
     private readonly configService: ConfigService,
   ) {
     super(<StrategyOptions>{
@@ -44,7 +49,10 @@ export class JwtStrategy
    * @returns User entity
    */
   async validate(payload: JwtPayload) {
-    const user = this.usersService.findById(payload.userId);
+    const user = await this.usersRepository.findOne({
+      where: { id: payload.userId },
+      relations: { roles: true },
+    });
 
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);

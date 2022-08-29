@@ -16,6 +16,12 @@ import { Workbook } from './workbooks/entities/workbook.entity';
 import { RouterModule } from '@nestjs/core';
 import { Article } from './articles/entities/article.entity';
 import { LoggerMiddleware } from './logger.middleware';
+import { BoardsModule } from './boards/boards.module';
+import { Board } from './boards/entities/board.entity';
+import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/entities/role.entity';
+import { PermissionsModule } from './permissions/permissions.module';
+import path from 'path';
 
 @Module({
   imports: [
@@ -33,12 +39,16 @@ import { LoggerMiddleware } from './logger.middleware';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
+        autoLoadEntities: true,
         entities: [
-          User,
-          Problem,
-          Submission,
-          Workbook,
-          Article,
+          // User,
+          // Problem,
+          // Submission,
+          // Workbook,
+          // Article,
+          // Board,
+          // Role,
+          // path.join(__dirname, '/**/*.entity.ts'),
           // __dirname + '/**/*.entity.ts',
         ],
         synchronize: true,
@@ -54,6 +64,9 @@ import { LoggerMiddleware } from './logger.middleware';
           SubmissionsModule,
           WorkbooksModule,
           ArticlesModule,
+          BoardsModule,
+          RolesModule,
+          PermissionsModule,
         ],
       },
     ]),
@@ -63,6 +76,9 @@ import { LoggerMiddleware } from './logger.middleware';
     SubmissionsModule,
     WorkbooksModule,
     ArticlesModule,
+    BoardsModule,
+    RolesModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

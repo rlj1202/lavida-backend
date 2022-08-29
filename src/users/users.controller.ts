@@ -34,9 +34,9 @@ export class UsersController {
     return await this.authService.login(user);
   }
 
-  @Get(':id')
-  async find(@Param('id') id: number) {
-    const user = await this.userService.findById(id);
+  @Get(':username')
+  async find(@Param('username') username: string) {
+    const user = await this.userService.findByUsername(username);
     return user;
   }
 

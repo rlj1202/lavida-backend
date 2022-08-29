@@ -1,10 +1,12 @@
 import { Exclude } from 'class-transformer';
+import { Role } from 'src/roles/entities/role.entity';
 import { Submission } from 'src/submissions/entities/submission.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,7 +17,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -28,6 +30,9 @@ export class User {
 
   @OneToMany(() => Submission, (subsmission) => subsmission.user)
   submissions: Submission[];
+
+  @ManyToMany(() => Role, (role) => role.users)
+  roles: Role[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,34 +1,30 @@
-import { Board } from 'src/boards/entities/board.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Article } from 'src/articles/entities/article.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('article')
-export class Article {
+@Entity('board')
+export class Board {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ unique: true })
+  slug: string;
 
   @Column()
   title: string;
 
   @Column()
-  content: string;
+  description: string;
 
-  @ManyToOne(() => User)
-  author: User;
-
-  @ManyToOne(() => Board, (board) => board.articles)
-  board: Board;
-
-  @Column({ default: 0 })
-  likes: number;
+  @OneToMany(() => Article, (article) => article.board)
+  articles: Article[];
 
   @CreateDateColumn()
   createdAt: Date;
