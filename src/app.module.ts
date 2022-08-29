@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -13,6 +13,9 @@ import { ArticlesModule } from './articles/articles.module';
 import { Problem } from './problems/entities/problem.entity';
 import { Submission } from './submissions/entities/submission.entity';
 import { Workbook } from './workbooks/entities/workbook.entity';
+import { RouterModule } from '@nestjs/core';
+import { Article } from './articles/entities/article.entity';
+import { LoggerMiddleware } from './logger.middleware';
 
 @Module({
   imports: [
@@ -35,11 +38,25 @@ import { Workbook } from './workbooks/entities/workbook.entity';
           Problem,
           Submission,
           Workbook,
+          Article,
           // __dirname + '/**/*.entity.ts',
         ],
         synchronize: true,
       }),
     }),
+    RouterModule.register([
+      {
+        path: 'api',
+        children: [
+          AuthModule,
+          UsersModule,
+          ProblemsModule,
+          SubmissionsModule,
+          WorkbooksModule,
+          ArticlesModule,
+        ],
+      },
+    ]),
     AuthModule,
     UsersModule,
     ProblemsModule,
@@ -50,4 +67,8 @@ import { Workbook } from './workbooks/entities/workbook.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

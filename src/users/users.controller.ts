@@ -15,6 +15,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user-dto';
+import { User } from './entities/user.entity';
+import { GetUser } from './user.decorator';
 import { UsersService } from './users.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -40,10 +42,9 @@ export class UsersController {
 
   @UseGuards(JwtGuard)
   @Patch()
-  async update(@Body() dto: UpdateUserDto) {
-    // TODO:
-    const user = await this.userService.update(0, dto);
-    return user;
+  async update(@Body() dto: UpdateUserDto, @GetUser() user: User) {
+    const updatedUser = await this.userService.update(user.id, dto);
+    return updatedUser;
   }
 
   @UseGuards(JwtGuard)

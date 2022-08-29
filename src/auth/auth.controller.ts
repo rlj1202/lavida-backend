@@ -21,12 +21,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() dto: LoginDto) {
-    const user = await this.authService.validateUser(
-      dto.username,
-      dto.password,
-    );
-
+  async login(@Body() dto: LoginDto, @GetUser() user: User) {
     return await this.authService.login(user);
   }
 
@@ -40,6 +35,12 @@ export class AuthController {
   @Post('refresh')
   async refresh(@GetUser() user: User) {
     return await this.authService.refresh(user);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('userinfo')
+  async getCurrentUserInfo(@GetUser() user: User) {
+    return user;
   }
 
   @UseGuards(JwtRefreshGuard)
