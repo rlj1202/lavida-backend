@@ -21,6 +21,7 @@ import { Board } from './boards/entities/board.entity';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/entities/role.entity';
 import { PermissionsModule } from './permissions/permissions.module';
+import { CommentsModule } from './comments/comments.module';
 import path from 'path';
 
 @Module({
@@ -67,6 +68,7 @@ import path from 'path';
           BoardsModule,
           RolesModule,
           PermissionsModule,
+          CommentsModule,
         ],
       },
     ]),
@@ -79,6 +81,7 @@ import path from 'path';
     BoardsModule,
     RolesModule,
     PermissionsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

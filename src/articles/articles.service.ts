@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BoardsService } from 'src/boards/boards.service';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
@@ -9,20 +11,39 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private readonly articlesRepository: Repository<Article>,
+    private readonly boardsService: BoardsService,
   ) {}
 
+  async findAll(boardSlug?: string): Promise<Article[]> {
+    const articles = await this.articlesRepository.find({
+      where: { board: { slug: boardSlug } },
+      relations: { author: true },
+    });
+    return articles;
+  }
+
   async findById(id: number): Promise<Article | undefined> {
-    const article = await this.articlesRepository.findOne({ where: { id } });
+    const article = await this.articlesRepository.findOne({
+      where: { id },
+      relations: { author: true, comments: { author: true } },
+    });
     return article;
   }
 
-  async create(dto: CreateArticleDto): Promise<Article> {
+  async create(
+    user: User,
+    dto: CreateArticleDto,
+    boardSlug?: string,
+  ): Promise<Article> {
     const article = new Article();
     article.title = dto.title;
     article.content = dto.content;
-    // TODO:
-    article.board;
-    article.author;
+    article.author = user;
+
+    if (boardSlug) {
+      const board = await this.boardsService.findBySlug(boardSlug);
+      article.board = board;
+    }
 
     return await this.articlesRepository.save(article);
   }

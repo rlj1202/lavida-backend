@@ -18,11 +18,17 @@ export class BoardsService {
 
   async findById(id: number): Promise<Board | undefined> {
     const board = await this.boardsRepository.findOne({ where: { id } });
+    if (!board) {
+      throw new Error('Board does not exist.');
+    }
     return board;
   }
 
   async findBySlug(slug: string): Promise<Board | undefined> {
     const board = await this.boardsRepository.findOne({ where: { slug } });
+    if (!board) {
+      throw new Error('Board does not exist.');
+    }
     return board;
   }
 
