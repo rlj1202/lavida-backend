@@ -28,6 +28,10 @@ export class User {
   @Exclude()
   refreshTokenHash?: string;
 
+  @Column({ unique: true })
+  @Exclude()
+  email: string;
+
   @OneToMany(() => Submission, (subsmission) => subsmission.user)
   submissions: Submission[];
 
@@ -42,4 +46,8 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  public isAdmin(): boolean {
+    return this.roles.map((role) => role.name).includes('admin');
+  }
 }

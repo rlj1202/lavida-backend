@@ -4,6 +4,7 @@ import { ArticlesService } from 'src/articles/articles.service';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
 
 @Injectable()
@@ -41,5 +42,16 @@ export class CommentsService {
     comment.article = article;
 
     return this.commentsRepository.save(comment);
+  }
+
+  async update(id: number, dto: UpdateCommentDto) {
+    const comment = await this.findById(id);
+    comment.content = dto.content;
+
+    return this.commentsRepository.save(comment);
+  }
+
+  async delete(id: number) {
+    await this.commentsRepository.softDelete(id);
   }
 }

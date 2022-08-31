@@ -10,11 +10,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/roles/role.guard';
+import { AppAbility } from 'src/casl/casl-ability.factory';
+import { Action } from 'src/casl/casl.enum';
+import CheckPolicies from 'src/casl/policies.decorator';
+import { PoliciesGuard } from 'src/casl/policies.guard';
 import { User } from 'src/users/entities/user.entity';
 import { GetUser } from 'src/users/user.decorator';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { Article } from './entities/article.entity';
 
 @Controller('articles')
 export class ArticlesController {
@@ -32,8 +36,11 @@ export class ArticlesController {
     return article;
   }
 
-  @UseGuards(JwtGuard)
   @Post()
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @CheckPolicies(async (ability: AppAbility) =>
+    ability.can(Action.Create, Article),
+  )
   async create(
     @Body() dto: CreateArticleDto,
     @GetUser() user: User,

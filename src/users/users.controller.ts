@@ -8,9 +8,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { AppAbility } from 'src/casl/casl-ability.factory';
+import { Action } from 'src/casl/casl.enum';
+import CheckPolicies from 'src/casl/policies.decorator';
+import { PoliciesGuard } from 'src/casl/policies.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { User } from './entities/user.entity';
@@ -37,8 +42,12 @@ export class UsersController {
     return user;
   }
 
-  @UseGuards(JwtGuard)
   @Patch()
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @CheckPolicies(
+    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
+      ability.can(Action.Update, request.user as User),
+  )
   async update(@Body() dto: UpdateUserDto, @GetUser() user: User) {
     const updatedUser = await this.userService.update(user.id, dto);
     return updatedUser;

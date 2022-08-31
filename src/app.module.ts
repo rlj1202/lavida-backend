@@ -22,6 +22,7 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/entities/role.entity';
 import { PermissionsModule } from './permissions/permissions.module';
 import { CommentsModule } from './comments/comments.module';
+import { CaslModule } from './casl/casl.module';
 import path from 'path';
 
 @Module({
@@ -55,6 +56,7 @@ import path from 'path';
         synchronize: true,
       }),
     }),
+    CaslModule,
     RouterModule.register([
       {
         path: 'api',

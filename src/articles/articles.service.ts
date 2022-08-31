@@ -25,7 +25,7 @@ export class ArticlesService {
   async findById(id: number): Promise<Article | undefined> {
     const article = await this.articlesRepository.findOne({
       where: { id },
-      relations: { author: true, comments: { author: true } },
+      relations: { author: true, comments: { author: true }, board: true },
     });
     return article;
   }

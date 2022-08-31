@@ -26,13 +26,16 @@ export class UsersService {
     const user = new User();
     user.username = dto.username;
     user.passwordHash = await bcrypt.hash(dto.password, saltRounds);
+    user.email = dto.email;
 
     return this.userRepository.save(user);
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User | undefined> {
     const user = await this.findById(id);
-    user.passwordHash = await bcrypt.hash(dto.password, saltRounds);
+    if (dto.password)
+      user.passwordHash = await bcrypt.hash(dto.password, saltRounds);
+    if (dto.email) user.email = dto.email;
 
     return this.userRepository.save(user);
   }
@@ -47,12 +50,17 @@ export class UsersService {
     return user;
   }
 
+  async findByEmail(email: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    return user;
+  }
+
   async delete(id: number): Promise<void> {
     await this.userRepository.softDelete(id);
   }
 
   async setRefreshToken(id: number, refreshToken: string) {
-    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, saltRounds);
 
     await this.userRepository.update(id, {
       refreshTokenHash: hashedRefreshToken,
