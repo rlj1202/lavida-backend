@@ -15,7 +15,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Workbook } from 'src/workbooks/entities/workbook.entity';
 import { Action } from './casl.enum';
 
-type Subjects =
+export type Subjects =
   | InferSubjects<
       | typeof Article
       | typeof User
