@@ -12,8 +12,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('workbook')
-export class Workbook {
+@Entity('contest')
+export class Contest {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,9 +23,14 @@ export class Workbook {
   @Column()
   description: string;
 
-  /** Who created the workbook. */
+  @Column()
+  startAt: Date;
+
+  @Column()
+  endAt: Date;
+
   @ManyToOne(() => User)
-  user: User;
+  moderator: User;
 
   @ManyToMany(() => Problem)
   @JoinTable()

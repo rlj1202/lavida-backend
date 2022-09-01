@@ -4,26 +4,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { WorkbooksModule } from './workbooks/workbooks.module';
 import { ArticlesModule } from './articles/articles.module';
-import { Problem } from './problems/entities/problem.entity';
-import { Submission } from './submissions/entities/submission.entity';
-import { Workbook } from './workbooks/entities/workbook.entity';
 import { RouterModule } from '@nestjs/core';
-import { Article } from './articles/entities/article.entity';
 import { LoggerMiddleware } from './logger.middleware';
 import { BoardsModule } from './boards/boards.module';
-import { Board } from './boards/entities/board.entity';
 import { RolesModule } from './roles/roles.module';
-import { Role } from './roles/entities/role.entity';
 import { PermissionsModule } from './permissions/permissions.module';
 import { CommentsModule } from './comments/comments.module';
 import { CaslModule } from './casl/casl.module';
-import path from 'path';
+import { ContestsModule } from './contests/contests.module';
 
 @Module({
   imports: [
@@ -71,6 +64,7 @@ import path from 'path';
           RolesModule,
           PermissionsModule,
           CommentsModule,
+          ContestsModule,
         ],
       },
     ]),
@@ -84,6 +78,7 @@ import path from 'path';
     RolesModule,
     PermissionsModule,
     CommentsModule,
+    ContestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

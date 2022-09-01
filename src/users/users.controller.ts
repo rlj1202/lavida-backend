@@ -1,20 +1,17 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { AppAbility } from 'src/casl/casl-ability.factory';
+import UseAbility from 'src/casl/ability.decorator';
 import { Action } from 'src/casl/casl.enum';
-import CheckPolicies from 'src/casl/policies.decorator';
 import { PoliciesGuard } from 'src/casl/policies.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user-dto';
@@ -44,18 +41,21 @@ export class UsersController {
 
   @Patch()
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(
-    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
-      ability.can(Action.Update, request.user as User),
+  @UseAbility(
+    Action.Update,
+    User,
+    UsersService,
+    async (req, service) => req.user as User,
   )
   async update(@Body() dto: UpdateUserDto, @GetUser() user: User) {
     const updatedUser = await this.userService.update(user.id, dto);
     return updatedUser;
   }
 
-  @UseGuards(JwtGuard)
-  @Post('ping')
-  async ping(@Req() request: Request) {
-    return request.user;
+  @Delete(':id')
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @UseAbility(Action.Delete, User)
+  async delete(@Param('id') id: number) {
+    await this.userService.delete(id);
   }
 }

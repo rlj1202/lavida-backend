@@ -1,12 +1,14 @@
 import { Type } from '@nestjs/common';
 import { Request } from 'express';
-import { CommentsService } from 'src/comments/comments.service';
-import { Comment } from 'src/comments/entities/comment.entity';
 import { Subjects } from './casl-ability.factory';
 import { Action } from './casl.enum';
 import CheckPolicies from './policies.decorator';
 
-/** @experimental */
+/**
+ * For easy use of CheckPolicies decorator.
+ * @see {CheckPolicies}
+ * @experimental
+ */
 const UseAbility = <T extends Subjects, S extends Type<any>>(
   action: Action,
   subject: T,
@@ -22,12 +24,5 @@ const UseAbility = <T extends Subjects, S extends Type<any>>(
       provider ? await provider(request, moduleRef.get(service)) : subject,
     ),
   );
-
-class TestClass {
-  @UseAbility(Action.Create, Comment, CommentsService, (req, service) =>
-    service.findById(parseInt(req.params.id)),
-  )
-  async asdf() {}
-}
 
 export default UseAbility;

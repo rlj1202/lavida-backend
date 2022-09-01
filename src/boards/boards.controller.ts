@@ -9,12 +9,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { AppAbility } from 'src/casl/casl-ability.factory';
+import UseAbility from 'src/casl/ability.decorator';
 import { Action } from 'src/casl/casl.enum';
-import CheckPolicies from 'src/casl/policies.decorator';
 import { PoliciesGuard } from 'src/casl/policies.guard';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -39,21 +36,15 @@ export class BoardsController {
 
   @Post()
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(async (ability: AppAbility) =>
-    ability.can(Action.Create, Board),
-  )
+  @UseAbility(Action.Create, Board)
   async create(@Body() dto: CreateBoardDto) {
     return await this.boardsService.create(dto);
   }
 
   @Patch(':slug')
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(
-    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
-      ability.can(
-        Action.Update,
-        await moduleRef.get(BoardsService).findBySlug(request.params.slug),
-      ),
+  @UseAbility(Action.Update, Board, BoardsService, (req, service) =>
+    service.findBySlug(req.params.slug),
   )
   async update(@Param('slug') slug: string, @Body() dto: UpdateBoardDto) {
     return await this.boardsService.update(slug, dto);
@@ -61,21 +52,10 @@ export class BoardsController {
 
   @Delete(':slug')
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(
-    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
-      ability.can(
-        Action.Delete,
-        await moduleRef.get(BoardsService).findBySlug(request.params.slug),
-      ),
+  @UseAbility(Action.Delete, Board, BoardsService, (req, service) =>
+    service.findBySlug(req.params.slug),
   )
   async delete(@Param('slug') slug: string) {
     await this.boardsService.deleteBySlug(slug);
-  }
-
-  // XXX:
-  @Post('ping')
-  @UseGuards(JwtGuard, PoliciesGuard)
-  async ping() {
-    return 'Success';
   }
 }

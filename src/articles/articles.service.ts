@@ -4,6 +4,7 @@ import { BoardsService } from 'src/boards/boards.service';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
 
 @Injectable()
@@ -46,5 +47,17 @@ export class ArticlesService {
     }
 
     return await this.articlesRepository.save(article);
+  }
+
+  async update(id: number, dto: UpdateArticleDto): Promise<Article> {
+    const article = await this.findById(id);
+    article.title = dto.title;
+    article.content = dto.content;
+
+    return this.articlesRepository.save(article);
+  }
+
+  async delete(id: number) {
+    await this.articlesRepository.softDelete(id);
   }
 }

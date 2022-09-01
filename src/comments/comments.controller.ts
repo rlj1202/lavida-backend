@@ -9,12 +9,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { AppAbility } from 'src/casl/casl-ability.factory';
+import UseAbility from 'src/casl/ability.decorator';
 import { Action } from 'src/casl/casl.enum';
-import CheckPolicies from 'src/casl/policies.decorator';
 import { PoliciesGuard } from 'src/casl/policies.guard';
 import { User } from 'src/users/entities/user.entity';
 import { GetUser } from 'src/users/user.decorator';
@@ -41,9 +38,7 @@ export class CommentsController {
 
   @Post()
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(async (ability: AppAbility) =>
-    ability.can(Action.Create, Comment),
-  )
+  @UseAbility(Action.Create, Comment)
   async create(
     @Body() dto: CreateCommentDto,
     @GetUser() user: User,
@@ -55,14 +50,8 @@ export class CommentsController {
 
   @Patch(':id')
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(
-    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
-      ability.can(
-        Action.Update,
-        await moduleRef
-          .get(CommentsService)
-          .findById(parseInt(request.params.id)),
-      ),
+  @UseAbility(Action.Update, Comment, CommentsService, ({ params }, service) =>
+    service.findById(parseInt(params.id)),
   )
   async update(@Param('id') id: number, @Body() dto: UpdateCommentDto) {
     const comment = await this.commentsService.update(id, dto);
@@ -71,14 +60,8 @@ export class CommentsController {
 
   @Delete(':id')
   @UseGuards(JwtGuard, PoliciesGuard)
-  @CheckPolicies(
-    async (ability: AppAbility, request: Request, moduleRef: ModuleRef) =>
-      ability.can(
-        Action.Delete,
-        await moduleRef
-          .get(CommentsService)
-          .findById(parseInt(request.params.id)),
-      ),
+  @UseAbility(Action.Delete, Comment, CommentsService, ({ params }, service) =>
+    service.findById(parseInt(params.id)),
   )
   async delete(@Param('id') id: number) {
     await this.commentsService.delete(id);
