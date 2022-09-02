@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import UseAbility from 'src/casl/ability.decorator';
 import { Action } from 'src/casl/casl.enum';
@@ -20,22 +21,26 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
 
+@ApiTags('comments')
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @ApiOkResponse({ type: () => Comment, isArray: true })
   @Get()
   async findAll(@Query('article') articleId: number) {
     const comments = await this.commentsService.findAll(articleId);
     return comments;
   }
 
+  @ApiOkResponse({ type: () => Comment })
   @Get(':id')
   async find(@Param('id') id: number) {
     const comment = await this.commentsService.findById(id);
     return comment;
   }
 
+  @ApiCreatedResponse({ type: () => Comment })
   @Post()
   @UseGuards(JwtGuard, PoliciesGuard)
   @UseAbility(Action.Create, Comment)
@@ -48,6 +53,7 @@ export class CommentsController {
     return comment;
   }
 
+  @ApiOkResponse({ type: () => Comment })
   @Patch(':id')
   @UseGuards(JwtGuard, PoliciesGuard)
   @UseAbility(Action.Update, Comment, CommentsService, ({ params }, service) =>

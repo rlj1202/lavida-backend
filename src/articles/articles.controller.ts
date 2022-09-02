@@ -11,6 +11,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import UseAbility from 'src/casl/ability.decorator';
 import { Action } from 'src/casl/casl.enum';
@@ -22,22 +29,31 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
 
+@ApiTags('articles')
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
+  @ApiOkResponse({ type: [Article] })
   @Get()
   async findAll(@Query('board') boardSlug: string) {
     const articles = await this.articlesService.findAll(boardSlug);
     return articles;
   }
 
+  @ApiOkResponse({ type: Article })
   @Get(':id')
   async find(@Param('id') id: number) {
     const article = await this.articlesService.findById(id);
     return article;
   }
 
+  @ApiBody({ type: CreateArticleDto })
+  @ApiQuery({ name: 'board', type: 'string' })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: Article,
+  })
   @Post()
   @UseGuards(JwtGuard, PoliciesGuard)
   @UseAbility(Action.Create, Article)
@@ -45,7 +61,7 @@ export class ArticlesController {
     @Body() dto: CreateArticleDto,
     @GetUser() user: User,
     @Query('board') boardSlug: string,
-  ) {
+  ): Promise<Article> {
     try {
       const article = await this.articlesService.create(user, dto, boardSlug);
       return article;
@@ -54,6 +70,7 @@ export class ArticlesController {
     }
   }
 
+  @ApiOkResponse({ type: Article })
   @Patch(':id')
   @UseGuards(JwtGuard, PoliciesGuard)
   @UseAbility(Action.Update, Article, ArticlesService, (req, service) =>

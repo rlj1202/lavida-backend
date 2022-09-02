@@ -27,6 +27,10 @@ export class ProblemsService {
     problem.title = dto.title;
     problem.description = dto.description;
     problem.author = user;
+    problem.inputDesc = dto.inputDesc;
+    problem.outputDesc = dto.outputDesc;
+    problem.timeLimit = dto.timeLimit;
+    problem.memoryLimit = dto.memoryLimit;
 
     return await this.problemsRepository.save(problem);
   }

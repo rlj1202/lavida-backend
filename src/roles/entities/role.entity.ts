@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -10,9 +11,11 @@ import {
 
 @Entity('role')
 export class Role {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true })
   name: string;
 

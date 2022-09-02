@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Role } from 'src/roles/entities/role.entity';
 import { Submission } from 'src/submissions/entities/submission.entity';
@@ -14,9 +15,11 @@ import {
 
 @Entity('user')
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true })
   username: string;
 
@@ -28,6 +31,7 @@ export class User {
   @Exclude()
   refreshTokenHash?: string;
 
+  @ApiProperty()
   @Column({ unique: true })
   @Exclude()
   email: string;
@@ -35,15 +39,19 @@ export class User {
   @OneToMany(() => Submission, (subsmission) => subsmission.user)
   submissions: Submission[];
 
+  @ApiProperty({ type: () => Role })
   @ManyToMany(() => Role, (role) => role.users)
   roles: Role[];
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @ApiProperty()
   @DeleteDateColumn()
   deletedAt: Date;
 
