@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Problem } from 'src/problems/entities/problem.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Problem } from '../../../src/problems/entities/problem.entity';
+import { User } from '../../../src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

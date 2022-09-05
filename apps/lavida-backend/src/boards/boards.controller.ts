@@ -10,10 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import UseAbility from 'src/casl/ability.decorator';
-import { Action } from 'src/casl/casl.enum';
-import { PoliciesGuard } from 'src/casl/policies.guard';
+import { JwtGuard } from '../../src/auth/guards/jwt.guard';
+import UseAbility from '../../src/casl/ability.decorator';
+import { Action } from '../../src/casl/casl.enum';
+import { PoliciesGuard } from '../../src/casl/policies.guard';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';

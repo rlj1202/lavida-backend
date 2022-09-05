@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import UseAbility from 'src/casl/ability.decorator';
-import { Action } from 'src/casl/casl.enum';
-import { PoliciesGuard } from 'src/casl/policies.guard';
+import { JwtGuard } from '../../src/auth/guards/jwt.guard';
+import UseAbility from '../../src/casl/ability.decorator';
+import { Action } from '../../src/casl/casl.enum';
+import { PoliciesGuard } from '../../src/casl/policies.guard';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entities/role.entity';
 import { RolesService } from './roles.service';

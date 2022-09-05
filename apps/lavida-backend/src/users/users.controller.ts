@@ -9,11 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import UseAbility from 'src/casl/ability.decorator';
-import { Action } from 'src/casl/casl.enum';
-import { PoliciesGuard } from 'src/casl/policies.guard';
+import { AuthService } from '../../src/auth/auth.service';
+import { JwtGuard } from '../../src/auth/guards/jwt.guard';
+import UseAbility from '../../src/casl/ability.decorator';
+import { Action } from '../../src/casl/casl.enum';
+import { PoliciesGuard } from '../../src/casl/policies.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { UpdateUserDto } from './dto/update-user-dto';

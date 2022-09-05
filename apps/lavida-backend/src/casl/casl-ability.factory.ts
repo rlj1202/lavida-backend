@@ -6,15 +6,15 @@ import {
   InferSubjects,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Article } from 'src/articles/entities/article.entity';
-import { Board } from 'src/boards/entities/board.entity';
-import { Comment } from 'src/comments/entities/comment.entity';
-import { Contest } from 'src/contests/entities/contest.entity';
-import { Problem } from 'src/problems/entities/problem.entity';
-import { Role } from 'src/roles/entities/role.entity';
-import { Submission } from 'src/submissions/entities/submission.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Workbook } from 'src/workbooks/entities/workbook.entity';
+import { Article } from '../../src/articles/entities/article.entity';
+import { Board } from '../../src/boards/entities/board.entity';
+import { Comment } from '../../src/comments/entities/comment.entity';
+import { Contest } from '../../src/contests/entities/contest.entity';
+import { Problem } from '../../src/problems/entities/problem.entity';
+import { Role } from '../../src/roles/entities/role.entity';
+import { Submission } from '../../src/submissions/entities/submission.entity';
+import { User } from '../../src/users/entities/user.entity';
+import { Workbook } from '../../src/workbooks/entities/workbook.entity';
 import { Action } from './casl.enum';
 
 export type Subjects =

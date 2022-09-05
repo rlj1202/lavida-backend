@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../src/users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../../src/users/users.service';
 import { JwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { LoginResponseDto } from 'src/users/dto/login-response.dto';
+import { LoginResponseDto } from '../../src/users/dto/login-response.dto';
 import { RefreshResponseDto } from './dto/refresh-response.dto';
 
 @Injectable()

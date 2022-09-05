@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BoardsService } from 'src/boards/boards.service';
-import { User } from 'src/users/entities/user.entity';
+import { BoardsService } from '../../src/boards/boards.service';
+import { User } from '../../src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';

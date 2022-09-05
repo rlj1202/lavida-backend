@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Board } from 'src/boards/entities/board.entity';
-import { Comment } from 'src/comments/entities/comment.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Board } from '../../../src/boards/entities/board.entity';
+import { Comment } from '../../../src/comments/entities/comment.entity';
+import { User } from '../../../src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

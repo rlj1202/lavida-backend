@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BoardsModule } from 'src/boards/boards.module';
+import { BoardsModule } from '../../src/boards/boards.module';
 import { Article } from './entities/article.entity';
 import { ArticlesController } from './articles.controller';
 import { ArticlesService } from './articles.service';

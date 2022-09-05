@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProblemsService } from 'src/problems/problems.service';
-import { User } from 'src/users/entities/user.entity';
+import { ProblemsService } from '../../src/problems/problems.service';
+import { User } from '../../src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SubmitCodeDto } from './dto/submit-code.dto';
 import { Submission } from './entities/submission.entity';

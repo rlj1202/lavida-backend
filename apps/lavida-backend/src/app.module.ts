@@ -17,9 +17,16 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { CommentsModule } from './comments/comments.module';
 import { CaslModule } from './casl/casl.module';
 import { ContestsModule } from './contests/contests.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: 'JUDGE',
+        transport: Transport.TCP,
+      },
+    ]),
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local', '.env.development'],
       isGlobal: true,

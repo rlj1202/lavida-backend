@@ -10,7 +10,7 @@ import {
   VerifyCallback,
   VerifyCallbackWithRequest,
 } from 'passport-jwt';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../../src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtPayload } from '../jwt-payload.interface';
 

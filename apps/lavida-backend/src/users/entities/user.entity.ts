@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Role } from 'src/roles/entities/role.entity';
-import { Submission } from 'src/submissions/entities/submission.entity';
+import { Role } from '../../../src/roles/entities/role.entity';
+import { Submission } from '../../../src/submissions/entities/submission.entity';
 import {
   Column,
   CreateDateColumn,

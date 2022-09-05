@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../src/users/entities/user.entity';
 import { AppAbility, CaslAbilityFactory } from './casl-ability.factory';
 import { POLICIES_KEY } from './policies.constants';
 import { PolicyHandler } from './policies.handler';

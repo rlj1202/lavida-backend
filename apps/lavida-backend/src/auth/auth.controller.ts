@@ -6,9 +6,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
-import { LoginResponseDto } from 'src/users/dto/login-response.dto';
-import { User } from 'src/users/entities/user.entity';
-import { GetUser } from 'src/users/user.decorator';
+import { LoginResponseDto } from '../../src/users/dto/login-response.dto';
+import { User } from '../../src/users/entities/user.entity';
+import { GetUser } from '../../src/users/user.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshResponseDto } from './dto/refresh-response.dto';
