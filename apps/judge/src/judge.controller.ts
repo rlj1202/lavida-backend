@@ -8,6 +8,6 @@ export class JudgeController {
 
   @MessagePattern({ cmd: 'hello' })
   getHello(): string {
-    return this.judgeService.getHello();
+    return 'Hello';
   }
 }
